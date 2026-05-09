@@ -650,14 +650,14 @@ const FLAGS = {
   'Ghana': '🇬🇭', 'Panamá': '🇵🇦', 'Uzbekistán': '🇺🇿', 'Colombia': '🇨🇴',
 };
 
-let config = { token: '', baseId: '' };
+let config = { token: 'pathjPKOCQjy0emLO.0e9440812917fb83e01b658fda23f04a70ed2c94d5632856e15884ebbc1c6424', baseId: 'appH8ihJul8pDWOmE' };
 let currentPlayer = null;
 let allMatches = [];
 let allParticipants = [];
 let myForecasts = {};
 let currentFilter = 'open';
 
-function loadConfig() {
+function loadConfig() { return; // credentials hardcoded
   const saved = localStorage.getItem('quiniela_config');
   if (saved) {
     config = JSON.parse(saved);
