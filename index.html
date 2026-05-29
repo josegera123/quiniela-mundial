@@ -4,651 +4,711 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiniela Mundial 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green: #0a4f2a;
-    --green-mid: #1a7a42;
-    --green-light: #26a65b;
-    --gold: #f0b429;
-    --gold-dark: #c8920e;
-    --white: #ffffff;
-    --gray-100: #f5f5f0;
-    --gray-200: #e8e8e0;
-    --gray-400: #9a9a90;
-    --gray-700: #3a3a35;
-    --red: #e03131;
-    --blue: #1971c2;
-    --card-bg: #ffffff;
-    --body-bg: #f0f0eb;
-    --text: #1a1a18;
-    --text-muted: #6b6b65;
-    --shadow: 0 2px 12px rgba(0,0,0,0.10);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+    --green:      #2d6a4f;
+    --green-mid:  #40916c;
+    --green-lt:   #52b788;
+    --green-pale: #d8f3dc;
+    --green-xp:   #f0f8f4;
+    --gold:       #f4a825;
+    --gold-lt:    #fff4d6;
+    --red:        #e03131;
+    --white:      #ffffff;
+    --bg:         #f2f4f2;
+    --card:       #ffffff;
+    --text:       #1c1c1e;
+    --text2:      #48484a;
+    --muted:      #8e8e93;
+    --border:     #e5e5ea;
+    --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+    --shadow:     0 4px 16px rgba(0,0,0,0.09);
+    --shadow-lg:  0 10px 36px rgba(0,0,0,0.14);
+    --r:    16px;
+    --r-sm: 10px;
+    --pill: 100px;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--body-bg);
+    background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    padding-bottom: 80px;
   }
 
-  /* HEADER */
-  .header {
-    background: var(--green);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
+  /* ── TOP BAR ── */
+  .top-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
   }
-  .header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 60px,
-      rgba(255,255,255,0.03) 60px,
-      rgba(255,255,255,0.03) 61px
-    );
-    pointer-events: none;
-  }
-  .header-inner {
-    max-width: 700px;
+  .top-bar-inner {
+    max-width: 540px;
     margin: 0 auto;
-    padding: 28px 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    padding: 14px 18px 0;
   }
-  .header-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--gold);
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-  .header-subtitle {
-    font-size: 13px;
-    color: rgba(255,255,255,0.65);
-    margin-top: 4px;
-    letter-spacing: 0.5px;
-  }
-  .trophy {
-    font-size: 44px;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
-  }
-
-  /* NAV */
-  .nav {
-    background: var(--green-mid);
-    border-bottom: 2px solid var(--gold);
-  }
-  .nav-inner {
-    max-width: 700px;
-    margin: 0 auto;
-    display: flex;
-  }
-  .nav-btn {
-    flex: 1;
-    padding: 13px 8px;
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.65);
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border-bottom: 3px solid transparent;
-    letter-spacing: 0.3px;
-  }
-  .nav-btn:hover { color: white; background: rgba(255,255,255,0.08); }
-  .nav-btn.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
-    background: rgba(240,180,41,0.1);
-  }
-
-  /* MAIN */
-  .main {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 24px 16px 48px;
-  }
-
-  /* SCREEN */
-  .screen { display: none; }
-  .screen.active { display: block; }
-
-  /* PLAYER SELECT */
-  .player-select-wrap {
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
-  }
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.2px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .player-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-  }
-  .player-chip {
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1.5px solid var(--gray-200);
-    background: var(--gray-100);
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    transition: all 0.18s;
-    text-align: center;
-  }
-  .player-chip:hover {
-    border-color: var(--green-light);
-    background: #e8f5ee;
-    color: var(--green);
-  }
-  .player-chip.selected {
-    border-color: var(--green);
-    background: var(--green);
-    color: white;
-  }
-
-  /* MATCH CARD */
-  .matches-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .matches-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--green);
-    letter-spacing: 0.5px;
-  }
-  .badge {
-    background: var(--gold);
-    color: var(--green);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.3px;
-  }
-  .badge.red { background: #ffe3e3; color: var(--red); }
-  .badge.gray { background: var(--gray-200); color: var(--text-muted); }
-
-  .day-group { margin-bottom: 28px; }
-  .day-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--gray-200);
-    margin-bottom: 12px;
-  }
-
-  .match-card {
-    background: var(--card-bg);
-    border-radius: 14px;
-    padding: 18px 16px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-    border: 1.5px solid var(--gray-200);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .match-card:hover { border-color: var(--green-light); }
-  .match-card.saved { border-color: var(--green); }
-  .match-card.closed {
-    opacity: 0.6;
-    pointer-events: none;
-    background: var(--gray-100);
-  }
-
-  .match-meta {
+  .top-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 14px;
   }
-  .match-group {
-    font-size: 11px;
+  .app-wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .app-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-lt) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 4px;
+  }
+  .app-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .app-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--green);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .app-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* player chips */
+  .player-scroll {
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 12px;
+  }
+  .player-scroll::-webkit-scrollbar { display: none; }
+  .p-chip {
+    flex-shrink: 0;
+    padding: 6px 16px;
+    border-radius: var(--pill);
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.16s;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+  }
+  .p-chip:hover { border-color: var(--green-lt); color: var(--green); }
+  .p-chip.selected {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--white);
     font-weight: 600;
-    letter-spacing: 0.8px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 20px 16px 16px;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── FILTER PILLS ── */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .f-pill {
+    flex-shrink: 0;
+    padding: 7px 18px;
+    border-radius: var(--pill);
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .f-pill:hover { border-color: var(--green-lt); color: var(--green); }
+  .f-pill.active { background: var(--green); border-color: var(--green); color: var(--white); }
+
+  /* ── DAY GROUP ── */
+  .day-group { margin-bottom: 26px; }
+  .day-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-left: 2px;
+  }
+
+  /* ── MATCH CARD ── */
+  .match-card {
+    background: var(--card);
+    border-radius: var(--r);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .match-card:hover { box-shadow: var(--shadow); }
+  .match-card.saved { border-left: 4px solid var(--green-lt); }
+  .match-card.closed { opacity: 0.5; pointer-events: none; }
+
+  /* card top strip */
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     color: var(--green-mid);
     text-transform: uppercase;
   }
-  .match-time {
+  .phase-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green-lt);
+  }
+  .time-tag {
     font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    color: var(--muted);
+    font-weight: 500;
   }
-  .match-time.closing-soon { color: #e67700; font-weight: 600; }
+  .time-tag.warn { color: #e67700; font-weight: 700; }
+  .time-tag.closed-t { color: var(--red); font-weight: 600; }
 
-  .match-teams {
+  /* card body: two team blocks + VS center */
+  .card-body { padding: 16px 14px; }
+  .match-row {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 12px;
-  }
-  .team {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr 60px 1fr;
     align-items: center;
     gap: 6px;
   }
-  .team.right { align-items: center; }
+  .team-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
   .team-flag {
-    font-size: 36px;
-    line-height: 1;
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.15));
+    width: 58px;
+    height: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    flex-shrink: 0;
+    background: var(--border);
+  }
+  .team-flag img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .team-name {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     text-align: center;
     color: var(--text);
     line-height: 1.2;
   }
-
-  .score-input-wrap {
+  .score-ctrl {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
+    margin-top: 6px;
   }
-  .score-btn {
-    width: 28px;
-    height: 28px;
+  .sc-btn {
+    width: 26px;
+    height: 26px;
     border-radius: 8px;
-    border: 1.5px solid var(--gray-200);
-    background: var(--gray-100);
-    font-size: 16px;
-    font-weight: 600;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text);
-    transition: all 0.15s;
+    color: var(--text2);
+    transition: all 0.14s;
     line-height: 1;
+    font-family: 'Inter', sans-serif;
   }
-  .score-btn:hover { background: var(--green); color: white; border-color: var(--green); }
-  .score-display {
+  .sc-btn:hover { background: var(--green); color: var(--white); border-color: var(--green); }
+  .sc-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    color: var(--green);
-    min-width: 28px;
+    font-size: 34px;
+    color: var(--text);
+    min-width: 26px;
     text-align: center;
     line-height: 1;
   }
-  .vs-divider {
+
+  /* VS center column */
+  .vs-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    justify-content: space-between;
+    align-self: stretch;
+    padding: 4px 0;
   }
   .vs-text {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    color: var(--gray-400);
     letter-spacing: 1px;
+    color: var(--muted);
   }
   .vs-dash {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    color: var(--gray-400);
+    font-size: 26px;
+    color: var(--border);
     line-height: 1;
   }
 
-  .match-footer {
-    margin-top: 14px;
+  /* card footer */
+  .card-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 10px 14px 12px;
+    border-top: 1px solid var(--border);
   }
-  .venue-text {
-    font-size: 11px;
-    color: var(--text-muted);
-    flex: 1;
-  }
+  .venue-text { font-size: 11px; color: var(--muted); }
   .save-btn {
     padding: 8px 18px;
     background: var(--green);
-    color: white;
+    color: var(--white);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--pill);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.18s;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.16s;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
-  .save-btn:hover { background: var(--green-light); }
-  .save-btn:active { transform: scale(0.97); }
-  .save-btn.saved-state {
-    background: #e8f5ee;
-    color: var(--green);
-  }
-  .save-btn.loading { opacity: 0.7; pointer-events: none; }
+  .save-btn:hover { background: var(--green-lt); }
+  .save-btn:active { transform: scale(0.96); }
+  .save-btn.saved-state { background: var(--green-pale); color: var(--green); }
+  .save-btn.loading { opacity: 0.6; pointer-events: none; }
 
-  /* LEADERBOARD */
-  .leaderboard-card {
-    background: var(--card-bg);
-    border-radius: 16px;
+  /* ── LEADERBOARD ── */
+  .lb-card {
+    background: var(--card);
+    border-radius: var(--r);
     overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1.5px solid var(--gray-200);
-    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
   }
-  .leaderboard-header {
-    background: var(--green);
-    padding: 16px 20px;
+  .lb-head {
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+    padding: 20px 20px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .leaderboard-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    color: var(--gold);
-    letter-spacing: 0.5px;
-  }
-  .leaderboard-row {
-    display: grid;
-    grid-template-columns: 36px 1fr auto;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--gray-200);
-    transition: background 0.15s;
-  }
-  .leaderboard-row:last-child { border-bottom: none; }
-  .leaderboard-row:hover { background: var(--gray-100); }
-  .leaderboard-row.current-player { background: #e8f5ee; }
-  .rank {
+  .lb-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 22px;
-    color: var(--gray-400);
-    text-align: center;
+    color: var(--white);
+    letter-spacing: 1px;
   }
-  .rank.gold { color: #f0b429; }
-  .rank.silver { color: #adb5bd; }
-  .rank.bronze { color: #cd7f32; }
-  .player-info { display: flex; flex-direction: column; }
-  .player-name-lb { font-weight: 600; font-size: 15px; }
-  .player-stats { font-size: 12px; color: var(--text-muted); }
-  .points-display {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--green);
-  }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--green);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: var(--shadow-lg);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 1000;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.error { background: var(--red); }
-
-  /* CONFIG */
-  .config-card {
-    background: #fff8e1;
-    border: 2px dashed var(--gold);
-    border-radius: 14px;
-    padding: 24px;
-    margin-bottom: 20px;
-  }
-  .config-card h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    color: var(--green);
-    margin-bottom: 12px;
-  }
-  .config-field { margin-bottom: 14px; }
-  .config-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 6px;
-  }
-  .config-input {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1.5px solid var(--gray-200);
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    background: white;
-    color: var(--text);
-    transition: border-color 0.2s;
-  }
-  .config-input:focus {
-    outline: none;
-    border-color: var(--green);
-  }
-  .config-save-btn {
-    padding: 11px 24px;
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.18s;
-  }
-  .config-save-btn:hover { background: var(--green-light); }
-
-  /* LOADING */
-  .loading-wrap {
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--text-muted);
-    font-size: 15px;
-  }
-  .spinner {
+  .lb-refresh {
     width: 32px;
     height: 32px;
-    border: 3px solid var(--gray-200);
-    border-top-color: var(--green);
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 14px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* EMPTY */
-  .empty-state {
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--text-muted);
-  }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-text { font-size: 15px; }
-
-  .filter-tabs {
+    background: rgba(255,255,255,0.18);
+    border: none;
+    color: var(--white);
+    font-size: 17px;
+    cursor: pointer;
     display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
   }
-  .filter-tab {
-    padding: 7px 16px;
-    border-radius: 20px;
-    border: 1.5px solid var(--gray-200);
-    background: white;
+  .lb-refresh:hover { background: rgba(255,255,255,0.28); }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.14s;
+  }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: var(--green-xp); }
+  .lb-row.me { background: var(--green-pale); }
+
+  .rank-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .rank-box.r1 { background: var(--gold-lt); color: #b8850a; }
+  .rank-box.r2 { background: #f0f0f0;       color: #6b7280; }
+  .rank-box.r3 { background: #fdebd0;       color: #a05a2c; }
+  .rank-box.rn { background: var(--bg);    color: var(--muted); }
+
+  .lb-info { flex: 1; min-width: 0; }
+  .lb-name {
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lb-you {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--green-mid);
+    background: var(--green-pale);
+    padding: 1px 7px;
+    border-radius: var(--pill);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .lb-pts-wrap { text-align: right; }
+  .lb-pts {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--green);
+    line-height: 1;
+  }
+  .lb-pts-lbl { font-size: 9px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* ── CONFIG ── */
+  .cfg-section {
+    background: var(--card);
+    border-radius: var(--r);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .cfg-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .cfg-field { margin-bottom: 14px; }
+  .cfg-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    margin-bottom: 6px;
+  }
+  .cfg-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-sm);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .cfg-input:focus { outline: none; border-color: var(--green); background: var(--white); }
+  .cfg-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .primary-btn {
+    padding: 12px 24px;
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--pill);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.18s;
+    width: 100%;
+  }
+  .primary-btn:hover { background: var(--green-mid); }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom, 6px);
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.07);
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 0 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .nav-item.active { color: var(--green); }
+  .nav-icon { font-size: 22px; line-height: 1; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+  .nav-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.15s;
+    margin-top: 1px;
+  }
+  .nav-item.active .nav-dot { background: var(--green); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--text);
+    color: var(--white);
+    padding: 11px 22px;
+    border-radius: var(--pill);
     font-size: 13px;
     font-weight: 500;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: all 0.15s;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 1000;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
   }
-  .filter-tab:hover { border-color: var(--green); color: var(--green); }
-  .filter-tab.active {
-    background: var(--green);
-    color: white;
-    border-color: var(--green);
-  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.error { background: var(--red); }
+  .toast.success { background: var(--green); }
 
-  @media (max-width: 480px) {
-    .header-title { font-size: 28px; }
+  /* ── UTILITY ── */
+  .spinner {
+    width: 28px; height: 28px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-wrap {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 52px 20px;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 46px; margin-bottom: 10px; }
+  .empty-text { font-size: 14px; line-height: 1.5; }
+
+  @media (max-width: 380px) {
     .team-flag { font-size: 28px; }
-    .score-display { font-size: 26px; }
-    .nav-btn { font-size: 12px; padding: 11px 4px; }
+    .sc-num { font-size: 28px; }
+    .team-name { font-size: 11px; }
+    .match-row { grid-template-columns: 1fr 50px 1fr; }
   }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div>
-      <div class="header-title">Quiniela Mundial 2026</div>
-      <div class="header-subtitle">CANADÁ · MÉXICO · ESTADOS UNIDOS</div>
-    </div>
-    <div class="trophy">🏆</div>
-  </div>
-</div>
-
-<div class="nav">
-  <div class="nav-inner">
-    <button class="nav-btn active" onclick="showScreen('pronosticos')">⚽ Pronósticos</button>
-    <button class="nav-btn" onclick="showScreen('posiciones')">🏅 Posiciones</button>
-    <button class="nav-btn" onclick="showScreen('config')">⚙️ Configurar</button>
-  </div>
-</div>
-
-<div class="main">
-
-  <!-- SCREEN: PRONOSTICOS -->
-  <div class="screen active" id="screen-pronosticos">
-
-    <div class="player-select-wrap">
-      <div class="section-label">¿Quién eres?</div>
-      <div class="player-grid" id="player-grid">
-        <div class="loading-wrap" style="padding:16px; grid-column:1/-1;">
-          <div class="spinner"></div>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-row">
+      <div class="app-wordmark">
+        <div class="app-icon"><img src="assets/tournaments_fifa-world-cup-2026--white.football-logos.cc.svg" alt="FIFA World Cup 2026"></div>
+        <div>
+          <div class="app-name">Quiniela 2026</div>
+          <div class="app-sub">CANADÁ · MÉXICO · EE.UU.</div>
         </div>
       </div>
     </div>
+    <div class="player-scroll" id="player-scroll">
+      <span style="font-size:13px; color:var(--muted); padding:6px 0; white-space:nowrap;">
+        <span class="spinner" style="display:inline-block; width:14px; height:14px; margin:0 6px 0 0; vertical-align:middle; border-width:2px;"></span>
+        Cargando...
+      </span>
+    </div>
+  </div>
+</div>
 
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PRONÓSTICOS -->
+  <div class="screen active" id="screen-pronosticos">
+    <div id="no-player-msg">
+      <div class="empty-state">
+        <div class="empty-icon">👆</div>
+        <div class="empty-text">Selecciona tu nombre arriba<br>para ver los partidos</div>
+      </div>
+    </div>
     <div id="matches-section" style="display:none;">
-      <div class="filter-tabs">
-        <button class="filter-tab active" onclick="setFilter('open')">Abiertos</button>
-        <button class="filter-tab" onclick="setFilter('all')">Todos</button>
-        <button class="filter-tab" onclick="setFilter('my')">Mis pronósticos</button>
+      <div class="filter-row">
+        <button class="f-pill active" onclick="setFilter('open')">Abiertos</button>
+        <button class="f-pill" onclick="setFilter('all')">Todos</button>
+        <button class="f-pill" onclick="setFilter('my')">Mis pronósticos</button>
       </div>
       <div id="matches-container"></div>
     </div>
-
-    <div id="no-player-msg" style="display:none;">
-      <div class="empty-state">
-        <div class="empty-icon">👆</div>
-        <div class="empty-text">Selecciona tu nombre para ver los partidos</div>
-      </div>
-    </div>
   </div>
 
-  <!-- SCREEN: POSICIONES -->
+  <!-- POSICIONES -->
   <div class="screen" id="screen-posiciones">
-    <div class="leaderboard-card">
-      <div class="leaderboard-header">
-        <div class="leaderboard-title">🏆 Tabla de Posiciones</div>
-        <button onclick="loadLeaderboard()" style="background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:18px;" title="Actualizar">↻</button>
+    <div class="lb-card">
+      <div class="lb-head">
+        <div class="lb-title">Tabla de Posiciones</div>
+        <button class="lb-refresh" onclick="loadLeaderboard()" title="Actualizar">↻</button>
       </div>
       <div id="leaderboard-body">
-        <div class="loading-wrap"><div class="spinner"></div><div>Cargando...</div></div>
+        <div class="loading-wrap"><div class="spinner"></div>Cargando...</div>
       </div>
     </div>
   </div>
 
-  <!-- SCREEN: CONFIG -->
+  <!-- CONFIG -->
   <div class="screen" id="screen-config">
-    <div class="config-card">
-      <h2>⚙️ Configuración de Airtable</h2>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Ingresa tus credenciales de Airtable. Solo necesitas hacerlo una vez — se guardan en este navegador.</p>
-
-      <div class="config-field">
-        <label class="config-label">Personal Access Token</label>
-        <input class="config-input" type="password" id="cfg-token" placeholder="patXXXXXXXXXXXXXX.XXXXXXXXX">
-        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Obtén el tuyo en: airtable.com/create/tokens</div>
+    <div class="cfg-section">
+      <div class="cfg-title">🔑 Configuración de Airtable</div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Ingresa tus credenciales de Airtable. Solo necesitas hacerlo una vez — se guardan en este navegador.</p>
+      <div class="cfg-field">
+        <label class="cfg-label">Personal Access Token</label>
+        <input class="cfg-input" type="password" id="cfg-token" placeholder="patXXXXXXXXXXXXXX.XXXX">
+        <div class="cfg-hint">Obtén el tuyo en airtable.com/create/tokens</div>
       </div>
-
-      <div class="config-field">
-        <label class="config-label">Base ID</label>
-        <input class="config-input" type="text" id="cfg-base" placeholder="appXXXXXXXXXXXXXX">
-        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Lo encuentras en airtable.com/developers/web/api/introduction al seleccionar tu base</div>
+      <div class="cfg-field">
+        <label class="cfg-label">Base ID</label>
+        <input class="cfg-input" type="text" id="cfg-base" placeholder="appXXXXXXXXXXXXXX">
+        <div class="cfg-hint">Lo encuentras en airtable.com/developers/web/api/introduction</div>
       </div>
-
-      <button class="config-save-btn" onclick="saveConfig()">Guardar y conectar</button>
+      <button class="primary-btn" onclick="saveConfig()">Guardar y conectar</button>
     </div>
 
-    <div style="background:white; border-radius:14px; padding:20px; box-shadow:var(--shadow); border:1.5px solid var(--gray-200);">
-      <div style="font-weight:600; font-size:15px; margin-bottom:12px;">Agregar participante</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <input class="config-input" type="text" id="new-player-name" placeholder="Nombre del participante" style="flex:1; min-width:160px;">
-        <button class="config-save-btn" onclick="addParticipant()">Agregar</button>
+    <div class="cfg-section">
+      <div class="cfg-title">👤 Agregar participante</div>
+      <div class="cfg-field">
+        <input class="cfg-input" type="text" id="new-player-name" placeholder="Nombre del participante">
       </div>
+      <button class="primary-btn" onclick="addParticipant()">Agregar participante</button>
     </div>
   </div>
 
 </div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-pronosticos" onclick="showScreen('pronosticos', this)">
+    <div class="nav-icon">⚽</div>
+    <div class="nav-label">Pronósticos</div>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-posiciones" onclick="showScreen('posiciones', this)">
+    <div class="nav-icon">🏅</div>
+    <div class="nav-label">Posiciones</div>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-config" onclick="showScreen('config', this)">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">Configurar</div>
+    <div class="nav-dot"></div>
+  </button>
+</nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const FLAGS = {
-  'México': '🇲🇽', 'Sudáfrica': '🇿🇦', 'Corea del Sur': '🇰🇷', 'Chequia': '🇨🇿',
-  'Canadá': '🇨🇦', 'Bosnia y Herzegovina': '🇧🇦', 'Catar': '🇶🇦', 'Suiza': '🇨🇭',
-  'Estados Unidos': '🇺🇸', 'Paraguay': '🇵🇾', 'Brasil': '🇧🇷', 'Marruecos': '🇲🇦',
-  'Haití': '🇭🇹', 'Escocia': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Australia': '🇦🇺', 'Turquía': '🇹🇷',
-  'Alemania': '🇩🇪', 'Curazao': '🇨🇼', 'Países Bajos': '🇳🇱', 'Japón': '🇯🇵',
-  'Costa de Marfil': '🇨🇮', 'Ecuador': '🇪🇨', 'Suecia': '🇸🇪', 'Túnez': '🇹🇳',
-  'España': '🇪🇸', 'Cabo Verde': '🇨🇻', 'Bélgica': '🇧🇪', 'Egipto': '🇪🇬',
-  'Arabia Saudita': '🇸🇦', 'Uruguay': '🇺🇾', 'Irán': '🇮🇷', 'Nueva Zelanda': '🇳🇿',
-  'Francia': '🇫🇷', 'Senegal': '🇸🇳', 'Irak': '🇮🇶', 'Noruega': '🇳🇴',
-  'Argentina': '🇦🇷', 'Argelia': '🇩🇿', 'Austria': '🇦🇹', 'Jordania': '🇯🇴',
-  'Portugal': '🇵🇹', 'República del Congo': '🇨🇬', 'Inglaterra': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Croacia': '🇭🇷',
-  'Ghana': '🇬🇭', 'Panamá': '🇵🇦', 'Uzbekistán': '🇺🇿', 'Colombia': '🇨🇴',
+const COUNTRY_CODES = {
+  'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'Chequia': 'cz',
+  'Canadá': 'ca', 'Bosnia y Herzegovina': 'ba', 'Catar': 'qa', 'Suiza': 'ch',
+  'Estados Unidos': 'us', 'Paraguay': 'py', 'Brasil': 'br', 'Marruecos': 'ma',
+  'Haití': 'ht', 'Escocia': 'gb-sct', 'Australia': 'au', 'Turquía': 'tr',
+  'Alemania': 'de', 'Curazao': 'cw', 'Países Bajos': 'nl', 'Japón': 'jp',
+  'Costa de Marfil': 'ci', 'Ecuador': 'ec', 'Suecia': 'se', 'Túnez': 'tn',
+  'España': 'es', 'Cabo Verde': 'cv', 'Bélgica': 'be', 'Egipto': 'eg',
+  'Arabia Saudita': 'sa', 'Uruguay': 'uy', 'Irán': 'ir', 'Nueva Zelanda': 'nz',
+  'Francia': 'fr', 'Senegal': 'sn', 'Irak': 'iq', 'Noruega': 'no',
+  'Argentina': 'ar', 'Argelia': 'dz', 'Austria': 'at', 'Jordania': 'jo',
+  'Portugal': 'pt', 'República del Congo': 'cg', 'Inglaterra': 'gb-eng', 'Croacia': 'hr',
+  'Ghana': 'gh', 'Panamá': 'pa', 'Uzbekistán': 'uz', 'Colombia': 'co',
 };
+
+function flagHtml(teamName) {
+  const code = COUNTRY_CODES[teamName];
+  if (!code) return '<div class="team-flag"></div>';
+  return `<div class="team-flag"><img src="https://flagcdn.com/w80/${code}.png" alt="${teamName}" loading="lazy"></div>`;
+}
 
 let config = { token: 'pathjPKOCQjy0emLO.0e9440812917fb83e01b658fda23f04a70ed2c94d5632856e15884ebbc1c6424', baseId: 'appH8ihJul8pDWOmE' };
 let currentPlayer = null;
@@ -657,14 +717,7 @@ let allParticipants = [];
 let myForecasts = {};
 let currentFilter = 'open';
 
-function loadConfig() { return; // credentials hardcoded
-  const saved = localStorage.getItem('quiniela_config');
-  if (saved) {
-    config = JSON.parse(saved);
-    document.getElementById('cfg-token').value = config.token || '';
-    document.getElementById('cfg-base').value = config.baseId || '';
-  }
-}
+function loadConfig() { return; }
 
 function saveConfig() {
   config.token = document.getElementById('cfg-token').value.trim();
@@ -708,31 +761,34 @@ async function airtablePatch(table, recordId, fields) {
 }
 
 async function loadParticipants() {
-  const grid = document.getElementById('player-grid');
-  grid.innerHTML = '<div class="loading-wrap" style="padding:16px; grid-column:1/-1;"><div class="spinner"></div></div>';
+  const scroll = document.getElementById('player-scroll');
+  scroll.innerHTML = `<span style="font-size:13px;color:var(--muted);padding:6px 0;white-space:nowrap;">
+    <span class="spinner" style="display:inline-block;width:14px;height:14px;margin:0 6px 0 0;vertical-align:middle;border-width:2px;"></span>
+    Cargando...
+  </span>`;
 
   if (!config.token || !config.baseId) {
-    grid.innerHTML = '<div style="grid-column:1/-1; font-size:13px; color:var(--text-muted); padding:8px;">Configura Airtable primero en ⚙️</div>';
+    scroll.innerHTML = '<span style="font-size:13px;color:var(--muted);padding:6px 0;">Configura Airtable en ⚙️</span>';
     return;
   }
 
   try {
     const data = await airtableFetch('Participantes', '?sort[0][field]=Nombre&sort[0][direction]=asc');
     allParticipants = data.records || [];
-    renderPlayerGrid();
+    renderPlayerChips();
   } catch (e) {
-    grid.innerHTML = `<div style="grid-column:1/-1; color:var(--red); font-size:13px; padding:8px;">Error: ${e.message}</div>`;
+    scroll.innerHTML = `<span style="font-size:13px;color:var(--red);padding:6px 0;">Error: ${e.message}</span>`;
   }
 }
 
-function renderPlayerGrid() {
-  const grid = document.getElementById('player-grid');
+function renderPlayerChips() {
+  const scroll = document.getElementById('player-scroll');
   if (!allParticipants.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1; font-size:13px; color:var(--text-muted); padding:8px;">No hay participantes aún. Agrégalos en ⚙️</div>';
+    scroll.innerHTML = '<span style="font-size:13px;color:var(--muted);padding:6px 0;">Sin participantes — agrégalos en ⚙️</span>';
     return;
   }
-  grid.innerHTML = allParticipants.map(p => `
-    <button class="player-chip ${currentPlayer?.id === p.id ? 'selected' : ''}"
+  scroll.innerHTML = allParticipants.map(p => `
+    <button class="p-chip ${currentPlayer?.id === p.id ? 'selected' : ''}"
       onclick="selectPlayer('${p.id}', '${p.fields.Nombre.replace(/'/g, "\\'")}')">
       ${p.fields.Nombre}
     </button>
@@ -741,7 +797,7 @@ function renderPlayerGrid() {
 
 async function selectPlayer(id, name) {
   currentPlayer = { id, name };
-  renderPlayerGrid();
+  renderPlayerChips();
   document.getElementById('matches-section').style.display = 'block';
   document.getElementById('no-player-msg').style.display = 'none';
   await loadMatches();
@@ -749,12 +805,14 @@ async function selectPlayer(id, name) {
 
 async function loadMatches() {
   const container = document.getElementById('matches-container');
-  container.innerHTML = '<div class="loading-wrap"><div class="spinner"></div><div>Cargando partidos...</div></div>';
+  container.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>Cargando partidos...</div>';
 
   try {
     const [matchData, forecastData] = await Promise.all([
       airtableFetch('Partidos', '?sort[0][field]=Fecha+y+Hora+(Guatemala)&sort[0][direction]=asc'),
-      currentPlayer ? airtableFetch('Pronósticos', `?filterByFormula=FIND("${currentPlayer.id}",+ARRAYJOIN({Participante}))`) : Promise.resolve({ records: [] })
+      currentPlayer
+        ? airtableFetch('Pronósticos', `?filterByFormula=FIND("${currentPlayer.id}",+ARRAYJOIN({Participante}))`)
+        : Promise.resolve({ records: [] })
     ]);
 
     allMatches = matchData.records || [];
@@ -771,8 +829,8 @@ async function loadMatches() {
 
 function setFilter(f) {
   currentFilter = f;
-  document.querySelectorAll('.filter-tab').forEach((t, i) => {
-    t.classList.toggle('active', ['open', 'all', 'my'][i] === f);
+  document.querySelectorAll('.f-pill').forEach((t, i) => {
+    t.classList.toggle('active', ['open','all','my'][i] === f);
   });
   renderMatches();
 }
@@ -780,14 +838,10 @@ function setFilter(f) {
 function renderMatches() {
   const now = new Date();
   const container = document.getElementById('matches-container');
-
   let matches = allMatches;
 
   if (currentFilter === 'open') {
-    matches = matches.filter(m => {
-      const dt = new Date(m.fields['Fecha y Hora (Guatemala)']);
-      return (dt - now) > 24 * 3600 * 1000;
-    });
+    matches = matches.filter(m => (new Date(m.fields['Fecha y Hora (Guatemala)']) - now) > 24 * 3600000);
   } else if (currentFilter === 'my') {
     matches = matches.filter(m => myForecasts[m.id]);
   }
@@ -800,7 +854,7 @@ function renderMatches() {
   const byDay = {};
   for (const m of matches) {
     const dt = new Date(m.fields['Fecha y Hora (Guatemala)']);
-    const key = dt.toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long' });
+    const key = dt.toLocaleDateString('es-GT', { weekday:'long', day:'numeric', month:'long' });
     if (!byDay[key]) byDay[key] = [];
     byDay[key].push(m);
   }
@@ -820,52 +874,61 @@ function renderMatchCard(m, now) {
   const hoursLeft = msLeft / 3600000;
   const isClosed = hoursLeft <= 24;
   const isClosingSoon = hoursLeft > 24 && hoursLeft < 48;
-  const timeStr = dt.toLocaleTimeString('es-GT', { hour: '2-digit', minute: '2-digit' });
-  const forecast = myForecasts[m.id];
-  const localScore = forecast ? forecast.fields['Goles Pronóstico Local'] : 0;
-  const visitorScore = forecast ? forecast.fields['Goles Pronóstico Visitante'] : 0;
-  const isSaved = !!forecast;
-  const flagLocal = FLAGS[f['Equipo Local']] || '🏳️';
-  const flagVisit = FLAGS[f['Equipo Visitante']] || '🏳️';
+  const timeStr = dt.toLocaleTimeString('es-GT', { hour:'2-digit', minute:'2-digit' });
 
-  let timeLabel = '';
-  if (isClosed && msLeft > 0) timeLabel = '🔒 Cerrado';
-  else if (isClosed && msLeft <= 0) timeLabel = '⏱ En juego';
-  else if (isClosingSoon) timeLabel = `⚠️ Cierra en ${Math.floor(hoursLeft - 24)}h`;
-  else timeLabel = timeStr;
+  const forecast = myForecasts[m.id];
+  const localScore   = forecast ? (forecast.fields['Goles Pronóstico Local']    || 0) : 0;
+  const visitorScore = forecast ? (forecast.fields['Goles Pronóstico Visitante'] || 0) : 0;
+  const isSaved = !!forecast;
+
+  const flagLocal = flagHtml(f['Equipo Local']);
+  const flagVisit = flagHtml(f['Equipo Visitante']);
+
+  let timeLabel, timeClass;
+  if (isClosed && msLeft > 0) { timeLabel = '🔒 Cerrado';   timeClass = 'closed-t'; }
+  else if (isClosed)           { timeLabel = '⏱ En juego';  timeClass = 'closed-t'; }
+  else if (isClosingSoon)      { timeLabel = `⚠️ Cierra en ${Math.floor(hoursLeft - 24)}h`; timeClass = 'warn'; }
+  else                         { timeLabel = timeStr;         timeClass = ''; }
 
   return `
     <div class="match-card ${isSaved ? 'saved' : ''} ${isClosed ? 'closed' : ''}" id="card-${m.id}">
-      <div class="match-meta">
-        <span class="match-group">${f['Fase']}</span>
-        <span class="match-time ${isClosingSoon ? 'closing-soon' : ''}">${timeLabel}</span>
+      <div class="card-head">
+        <div class="phase-tag"><div class="phase-dot"></div>${f['Fase'] || ''}</div>
+        <div class="time-tag ${timeClass}">${timeLabel}</div>
       </div>
-      <div class="match-teams">
-        <div class="team">
-          <div class="team-flag">${flagLocal}</div>
-          <div class="team-name">${f['Equipo Local']}</div>
-        </div>
-        <div class="vs-divider">
-          <div class="score-input-wrap">
-            <button class="score-btn" onclick="changeScore('${m.id}', 'local', -1)">−</button>
-            <div class="score-display" id="score-local-${m.id}">${localScore}</div>
-            <button class="score-btn" onclick="changeScore('${m.id}', 'local', 1)">+</button>
+      <div class="card-body">
+        <div class="match-row">
+          <!-- Local team -->
+          <div class="team-block">
+            ${flagLocal}
+            <div class="team-name">${f['Equipo Local']}</div>
+            <div class="score-ctrl">
+              <button class="sc-btn" onclick="changeScore('${m.id}','local',-1)">−</button>
+              <div class="sc-num" id="score-local-${m.id}">${localScore}</div>
+              <button class="sc-btn" onclick="changeScore('${m.id}','local',1)">+</button>
+            </div>
           </div>
-          <div class="vs-text">VS</div>
-          <div class="score-input-wrap">
-            <button class="score-btn" onclick="changeScore('${m.id}', 'visitor', -1)">−</button>
-            <div class="score-display" id="score-visitor-${m.id}">${visitorScore}</div>
-            <button class="score-btn" onclick="changeScore('${m.id}', 'visitor', 1)">+</button>
+          <!-- VS divider -->
+          <div class="vs-col">
+            <div class="vs-text">VS</div>
+            <div class="vs-dash">—</div>
           </div>
-        </div>
-        <div class="team">
-          <div class="team-flag">${flagVisit}</div>
-          <div class="team-name">${f['Equipo Visitante']}</div>
+          <!-- Visitor team -->
+          <div class="team-block">
+            ${flagVisit}
+            <div class="team-name">${f['Equipo Visitante']}</div>
+            <div class="score-ctrl">
+              <button class="sc-btn" onclick="changeScore('${m.id}','visitor',-1)">−</button>
+              <div class="sc-num" id="score-visitor-${m.id}">${visitorScore}</div>
+              <button class="sc-btn" onclick="changeScore('${m.id}','visitor',1)">+</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="match-footer">
+      <div class="card-foot">
         <div class="venue-text">📍 ${f['Sede']?.split(',')[0] || ''}</div>
-        <button class="save-btn ${isSaved ? 'saved-state' : ''}" id="btn-${m.id}" onclick="saveForecast('${m.id}', '${f['Equipo Local']}', '${f['Equipo Visitante']}')">
+        <button class="save-btn ${isSaved ? 'saved-state' : ''}" id="btn-${m.id}"
+          onclick="saveForecast('${m.id}','${f['Equipo Local']}','${f['Equipo Visitante']}')">
           ${isSaved ? '✅ Guardado' : '💾 Guardar'}
         </button>
       </div>
@@ -876,20 +939,17 @@ function renderMatchCard(m, now) {
 const scoreState = {};
 
 function changeScore(matchId, side, delta) {
-  if (!scoreState[matchId]) scoreState[matchId] = { local: 0, visitor: 0 };
+  if (!scoreState[matchId]) scoreState[matchId] = { local:0, visitor:0 };
   const forecast = myForecasts[matchId];
   if (!scoreState[matchId]._init && forecast) {
-    scoreState[matchId].local = forecast.fields['Goles Pronóstico Local'] || 0;
+    scoreState[matchId].local   = forecast.fields['Goles Pronóstico Local']    || 0;
     scoreState[matchId].visitor = forecast.fields['Goles Pronóstico Visitante'] || 0;
     scoreState[matchId]._init = true;
   }
   scoreState[matchId][side] = Math.max(0, (scoreState[matchId][side] || 0) + delta);
   document.getElementById(`score-${side}-${matchId}`).textContent = scoreState[matchId][side];
   const btn = document.getElementById(`btn-${matchId}`);
-  if (btn) {
-    btn.classList.remove('saved-state');
-    btn.innerHTML = '💾 Guardar';
-  }
+  if (btn) { btn.classList.remove('saved-state'); btn.innerHTML = '💾 Guardar'; }
 }
 
 async function saveForecast(matchId, teamLocal, teamVisitor) {
@@ -898,12 +958,12 @@ async function saveForecast(matchId, teamLocal, teamVisitor) {
   if (!scoreState[matchId]) {
     const fc = myForecasts[matchId];
     scoreState[matchId] = {
-      local: fc ? (fc.fields['Goles Pronóstico Local'] || 0) : 0,
+      local:   fc ? (fc.fields['Goles Pronóstico Local']    || 0) : 0,
       visitor: fc ? (fc.fields['Goles Pronóstico Visitante'] || 0) : 0,
     };
   }
 
-  const local = scoreState[matchId].local || 0;
+  const local   = scoreState[matchId].local   || 0;
   const visitor = scoreState[matchId].visitor || 0;
   const btn = document.getElementById(`btn-${matchId}`);
   btn.classList.add('loading');
@@ -916,7 +976,7 @@ async function saveForecast(matchId, teamLocal, teamVisitor) {
         'Goles Pronóstico Local': local,
         'Goles Pronóstico Visitante': visitor,
       });
-      myForecasts[matchId].fields['Goles Pronóstico Local'] = local;
+      myForecasts[matchId].fields['Goles Pronóstico Local']    = local;
       myForecasts[matchId].fields['Goles Pronóstico Visitante'] = visitor;
     } else {
       const record = await airtablePost('Pronósticos', {
@@ -931,7 +991,7 @@ async function saveForecast(matchId, teamLocal, teamVisitor) {
     btn.classList.add('saved-state');
     btn.innerHTML = '✅ Guardado';
     document.getElementById(`card-${matchId}`)?.classList.add('saved');
-    showToast(`✅ ${teamLocal} ${local} - ${visitor} ${teamVisitor} guardado`);
+    showToast(`✅ ${teamLocal} ${local} – ${visitor} ${teamVisitor}`);
   } catch (e) {
     btn.classList.remove('loading');
     btn.innerHTML = '💾 Guardar';
@@ -941,34 +1001,37 @@ async function saveForecast(matchId, teamLocal, teamVisitor) {
 
 async function loadLeaderboard() {
   const body = document.getElementById('leaderboard-body');
-  body.innerHTML = '<div class="loading-wrap"><div class="spinner"></div><div>Cargando...</div></div>';
+  body.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>Cargando...</div>';
 
   try {
     const data = await airtableFetch('Participantes', '?sort[0][field]=Puntos+Totales&sort[0][direction]=desc');
     const players = data.records || [];
     if (!players.length) {
-      body.innerHTML = '<div class="empty-state"><div>Sin participantes aún</div></div>';
+      body.innerHTML = '<div class="empty-state"><div class="empty-text">Sin participantes aún</div></div>';
       return;
     }
-    const rankColors = ['gold', 'silver', 'bronze'];
-    const rankEmojis = ['🥇', '🥈', '🥉'];
+    const rankClasses  = ['r1','r2','r3'];
+    const rankEmojis   = ['🥇','🥈','🥉'];
     body.innerHTML = players.map((p, i) => {
       const pts = p.fields['Puntos Totales'] || 0;
-      const rankClass = rankColors[i] || '';
-      const rankDisplay = i < 3 ? rankEmojis[i] : `${i + 1}`;
+      const rc  = rankClasses[i] || 'rn';
+      const rd  = i < 3 ? rankEmojis[i] : `${i + 1}`;
       const isMe = p.id === currentPlayer?.id;
       return `
-        <div class="leaderboard-row ${isMe ? 'current-player' : ''}">
-          <div class="rank ${rankClass}">${rankDisplay}</div>
-          <div class="player-info">
-            <div class="player-name-lb">${p.fields.Nombre}${isMe ? ' <span style="font-size:11px;color:var(--green-mid)">(tú)</span>' : ''}</div>
+        <div class="lb-row ${isMe ? 'me' : ''}">
+          <div class="rank-box ${rc}">${rd}</div>
+          <div class="lb-info">
+            <div class="lb-name">${p.fields.Nombre}${isMe ? '<span class="lb-you">tú</span>' : ''}</div>
           </div>
-          <div class="points-display">${pts}</div>
+          <div class="lb-pts-wrap">
+            <div class="lb-pts">${pts}</div>
+            <div class="lb-pts-lbl">pts</div>
+          </div>
         </div>
       `;
     }).join('');
   } catch (e) {
-    body.innerHTML = `<div class="empty-state"><div>Error: ${e.message}</div></div>`;
+    body.innerHTML = `<div class="empty-state"><div class="empty-text">Error: ${e.message}</div></div>`;
   }
 }
 
@@ -986,11 +1049,11 @@ async function addParticipant() {
   }
 }
 
-function showScreen(id) {
+function showScreen(id, btn) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById(`screen-${id}`).classList.add('active');
-  event.target.classList.add('active');
+  (btn || document.getElementById(`nav-${id}`)).classList.add('active');
   if (id === 'posiciones') loadLeaderboard();
 }
 
@@ -998,7 +1061,7 @@ let toastTimer;
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.className = `toast ${isError ? 'error' : ''} show`;
+  t.className = `toast ${isError ? 'error' : 'success'} show`;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
@@ -1011,8 +1074,8 @@ async function init() {
       document.getElementById('no-player-msg').style.display = 'block';
     }
   } else {
-    document.getElementById('player-grid').innerHTML =
-      '<div style="grid-column:1/-1; font-size:13px; color:var(--text-muted); padding:8px;">Ve a ⚙️ Configurar para conectar con Airtable</div>';
+    document.getElementById('player-scroll').innerHTML =
+      '<span style="font-size:13px;color:var(--muted);padding:6px 0;">Ve a ⚙️ Configurar para conectar con Airtable</span>';
     document.getElementById('no-player-msg').style.display = 'block';
   }
 }
