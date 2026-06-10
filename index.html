@@ -573,6 +573,118 @@
   .empty-icon { font-size: 46px; margin-bottom: 10px; }
   .empty-text { font-size: 14px; line-height: 1.5; }
 
+  /* ── PLAYER SELECTION GATE ── */
+  .gate {
+    position: fixed;
+    inset: 0;
+    background: var(--white);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px 40px;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .gate.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-16px);
+  }
+  .gate-logo {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-lt) 100%);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .gate-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .gate-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    color: var(--green);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .gate-sub {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.4px;
+    margin-bottom: 32px;
+  }
+  .gate-question {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .gate-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.18s;
+    box-shadow: var(--shadow-sm);
+  }
+  .gate-card:hover {
+    border-color: var(--green);
+    background: var(--green-xp);
+    color: var(--green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .gate-card:active { transform: scale(0.97); }
+  .gate-card-icon { font-size: 28px; margin-bottom: 8px; }
+
+  /* ── ACTIVE PLAYER BADGE in top bar ── */
+  .player-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-pale);
+    border-radius: var(--pill);
+    padding: 6px 14px 6px 8px;
+    cursor: pointer;
+    border: 1.5px solid var(--green-pale);
+    transition: border-color 0.15s;
+    margin-bottom: 12px;
+  }
+  .player-badge:hover { border-color: var(--green-lt); }
+  .player-badge-dot {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+  }
+  .player-badge-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+  }
+  .player-badge-change {
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
   @media (max-width: 380px) {
     .team-flag { font-size: 28px; }
     .sc-num { font-size: 28px; }
@@ -582,6 +694,21 @@
 </style>
 </head>
 <body>
+
+<!-- PLAYER SELECTION GATE -->
+<div class="gate" id="gate">
+  <div class="gate-logo">
+    <img src="assets/tournaments_fifa-world-cup-2026--white.football-logos.cc.svg" alt="FIFA World Cup 2026">
+  </div>
+  <div class="gate-title">Quiniela 2026</div>
+  <div class="gate-sub">CANADÁ · MÉXICO · ESTADOS UNIDOS</div>
+  <div class="gate-question">¿Quién eres?</div>
+  <div class="gate-grid" id="gate-grid">
+    <div style="grid-column:1/-1;" class="loading-wrap" style="padding:20px;">
+      <div class="spinner"></div>Cargando...
+    </div>
+  </div>
+</div>
 
 <!-- TOP BAR -->
 <div class="top-bar">
@@ -595,11 +722,8 @@
         </div>
       </div>
     </div>
-    <div class="player-scroll" id="player-scroll">
-      <span style="font-size:13px; color:var(--muted); padding:6px 0; white-space:nowrap;">
-        <span class="spinner" style="display:inline-block; width:14px; height:14px; margin:0 6px 0 0; vertical-align:middle; border-width:2px;"></span>
-        Cargando...
-      </span>
+    <div id="top-player-area">
+      <!-- filled by renderTopPlayer() -->
     </div>
   </div>
 </div>
@@ -761,43 +885,65 @@ async function airtablePatch(table, recordId, fields) {
 }
 
 async function loadParticipants() {
-  const scroll = document.getElementById('player-scroll');
-  scroll.innerHTML = `<span style="font-size:13px;color:var(--muted);padding:6px 0;white-space:nowrap;">
-    <span class="spinner" style="display:inline-block;width:14px;height:14px;margin:0 6px 0 0;vertical-align:middle;border-width:2px;"></span>
-    Cargando...
-  </span>`;
+  const grid = document.getElementById('gate-grid');
+  grid.innerHTML = '<div style="grid-column:1/-1" class="loading-wrap"><div class="spinner"></div>Cargando...</div>';
 
   if (!config.token || !config.baseId) {
-    scroll.innerHTML = '<span style="font-size:13px;color:var(--muted);padding:6px 0;">Configura Airtable en ⚙️</span>';
+    grid.innerHTML = '<div style="grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center;">Configura Airtable en ⚙️</div>';
     return;
   }
 
   try {
     const data = await airtableFetch('Participantes', '?sort[0][field]=Nombre&sort[0][direction]=asc');
     allParticipants = data.records || [];
-    renderPlayerChips();
+    renderGateCards();
   } catch (e) {
-    scroll.innerHTML = `<span style="font-size:13px;color:var(--red);padding:6px 0;">Error: ${e.message}</span>`;
+    grid.innerHTML = `<div style="grid-column:1/-1;font-size:13px;color:var(--red);text-align:center;">Error: ${e.message}</div>`;
   }
 }
 
-function renderPlayerChips() {
-  const scroll = document.getElementById('player-scroll');
+function renderGateCards() {
+  const grid = document.getElementById('gate-grid');
   if (!allParticipants.length) {
-    scroll.innerHTML = '<span style="font-size:13px;color:var(--muted);padding:6px 0;">Sin participantes — agrégalos en ⚙️</span>';
+    grid.innerHTML = '<div style="grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center;">Sin participantes — agrégalos en ⚙️</div>';
     return;
   }
-  scroll.innerHTML = allParticipants.map(p => `
-    <button class="p-chip ${currentPlayer?.id === p.id ? 'selected' : ''}"
+  grid.innerHTML = allParticipants.map(p => `
+    <button class="gate-card"
       onclick="selectPlayer('${p.id}', '${p.fields.Nombre.replace(/'/g, "\\'")}')">
+      <div class="gate-card-icon">👤</div>
       ${p.fields.Nombre}
     </button>
   `).join('');
 }
 
+function renderTopPlayer() {
+  const area = document.getElementById('top-player-area');
+  if (!currentPlayer) { area.innerHTML = ''; return; }
+  area.innerHTML = `
+    <div class="player-badge" onclick="switchPlayer()" title="Cambiar jugador">
+      <div class="player-badge-dot"></div>
+      <span class="player-badge-name">${currentPlayer.name}</span>
+      <span class="player-badge-change">cambiar</span>
+    </div>
+  `;
+}
+
+function switchPlayer() {
+  currentPlayer = null;
+  renderTopPlayer();
+  document.getElementById('gate').classList.remove('hidden');
+  // reset screens
+  document.getElementById('matches-section').style.display = 'none';
+  document.getElementById('no-player-msg').style.display = 'block';
+  showScreen('pronosticos', document.getElementById('nav-pronosticos'));
+}
+
 async function selectPlayer(id, name) {
   currentPlayer = { id, name };
-  renderPlayerChips();
+  // dismiss gate
+  document.getElementById('gate').classList.add('hidden');
+  renderTopPlayer();
   document.getElementById('matches-section').style.display = 'block';
   document.getElementById('no-player-msg').style.display = 'none';
   await loadMatches();
@@ -1001,6 +1147,16 @@ async function saveForecast(matchId, teamLocal, teamVisitor) {
 
 async function loadLeaderboard() {
   const body = document.getElementById('leaderboard-body');
+
+  if (!currentPlayer) {
+    body.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">👆</div>
+        <div class="empty-text">Selecciona tu nombre arriba<br>para ver las posiciones</div>
+      </div>`;
+    return;
+  }
+
   body.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>Cargando...</div>';
 
   try {
@@ -1068,15 +1224,14 @@ function showToast(msg, isError = false) {
 
 async function init() {
   loadConfig();
+  // hide main content until a player is chosen
+  document.getElementById('matches-section').style.display = 'none';
+  document.getElementById('no-player-msg').style.display = 'none';
   if (config.token && config.baseId) {
     await loadParticipants();
-    if (!currentPlayer) {
-      document.getElementById('no-player-msg').style.display = 'block';
-    }
   } else {
-    document.getElementById('player-scroll').innerHTML =
-      '<span style="font-size:13px;color:var(--muted);padding:6px 0;">Ve a ⚙️ Configurar para conectar con Airtable</span>';
-    document.getElementById('no-player-msg').style.display = 'block';
+    document.getElementById('gate-grid').innerHTML =
+      '<div style="grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center;">Ve a ⚙️ Configurar para conectar con Airtable</div>';
   }
 }
 
