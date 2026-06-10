@@ -862,6 +862,19 @@ async function airtableFetch(table, params = '') {
   return res.json();
 }
 
+async function airtableFetchAll(table, params = '') {
+  let records = [];
+  let offset = null;
+  do {
+    const sep = params.includes('?') ? '&' : '?';
+    const page = offset ? `${params}${sep}offset=${offset}` : params;
+    const data = await airtableFetch(table, page);
+    records = records.concat(data.records || []);
+    offset = data.offset || null;
+  } while (offset);
+  return records;
+}
+
 async function airtablePost(table, fields) {
   const url = `https://api.airtable.com/v0/${config.baseId}/${encodeURIComponent(table)}`;
   const res = await fetch(url, {
@@ -954,16 +967,15 @@ async function loadMatches() {
   container.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>Cargando partidos...</div>';
 
   try {
-    const [matchData, forecastData] = await Promise.all([
+    const [matchRecords, allForecastRecords] = await Promise.all([
       airtableFetch('Partidos', '?sort[0][field]=Fecha+y+Hora+(Guatemala)&sort[0][direction]=asc'),
-      currentPlayer
-        ? airtableFetch('Pronósticos', `?filterByFormula=FIND("${currentPlayer.id}",+ARRAYJOIN({Participante}))`)
-        : Promise.resolve({ records: [] })
+      currentPlayer ? airtableFetchAll('Pronósticos') : Promise.resolve([])
     ]);
 
-    allMatches = matchData.records || [];
+    allMatches = matchRecords.records || [];
     myForecasts = {};
-    for (const f of (forecastData.records || [])) {
+    for (const f of allForecastRecords) {
+      if (f.fields.Participante?.[0] !== currentPlayer?.id) continue;
       const partidoId = f.fields.Partido?.[0];
       if (partidoId) myForecasts[partidoId] = f;
     }
