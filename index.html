@@ -685,6 +685,15 @@
     margin-left: 4px;
   }
 
+  /* ── VERSION BAR ── */
+  .version-bar {
+    text-align: center;
+    padding: 12px 0 4px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
   @media (max-width: 380px) {
     .team-flag { font-size: 28px; }
     .sc-num { font-size: 28px; }
@@ -810,9 +819,12 @@
   </button>
 </nav>
 
+<div class="version-bar" id="version-bar"></div>
 <div class="toast" id="toast"></div>
 
 <script>
+const VERSION = 'v1.0.0';
+
 const COUNTRY_CODES = {
   'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'Chequia': 'cz',
   'Canadá': 'ca', 'Bosnia y Herzegovina': 'ba', 'Catar': 'qa', 'Suiza': 'ch',
@@ -1234,6 +1246,10 @@ function showToast(msg, isError = false) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+function renderVersion() {
+  document.getElementById('version-bar').textContent = `Quiniela Mundial 2026 · ${VERSION}`;
+}
+
 async function init() {
   loadConfig();
   // hide main content until a player is chosen
@@ -1247,6 +1263,7 @@ async function init() {
   }
 }
 
+renderVersion();
 init();
 </script>
 </body>
