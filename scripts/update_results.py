@@ -109,12 +109,13 @@ def update_airtable_record(record_id: str, home_score: int, away_score: int) -> 
     url = f"https://api.airtable.com/v0/{AIRTABLE_BASE}/{quote('Partidos')}/{record_id}"
     payload = {
         "fields": {
-            "Goles Local Real":      home_score,
-            "Goles Visitante Real":  away_score,
-            "Estado":                "Finalizado",
+            "Goles Local Real":     home_score,
+            "Goles Visitante Real": away_score,
         }
     }
     resp = requests.patch(url, headers=AT_HEADERS, json=payload, timeout=15)
+    if not resp.ok:
+        print(f"  Airtable error body: {resp.text}")
     resp.raise_for_status()
 
 
