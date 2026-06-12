@@ -2,9 +2,10 @@ name: Update Match Results
 
 on:
   schedule:
-    - cron: '0 14 * * *'   # 08:00 Guatemala (UTC-6)
+    - cron: '0 16 * * *'   # 10:00 Guatemala (UTC-6)
     - cron: '0 20 * * *'   # 14:00 Guatemala (UTC-6)
-    - cron: '0 3 * * *'    # 21:00 Guatemala (UTC-6)
+    - cron: '0 2 * * *'    # 20:00 Guatemala (UTC-6)
+    - cron: '0 5 * * *'    # 23:00 Guatemala (UTC-6)
   workflow_dispatch:        # manual trigger from GitHub UI
 
 jobs:
