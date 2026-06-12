@@ -109,8 +109,8 @@ def update_airtable_record(record_id: str, home_score: int, away_score: int) -> 
     url = f"https://api.airtable.com/v0/{AIRTABLE_BASE}/{quote('Partidos')}/{record_id}"
     payload = {
         "fields": {
-            "Goles Local Real":     home_score,
-            "Goles Visitante Real": away_score,
+            "Goles Reales Local":     str(home_score),
+            "Goles Reales Visitante": str(away_score),
         }
     }
     resp = requests.patch(url, headers=AT_HEADERS, json=payload, timeout=15)
@@ -161,8 +161,8 @@ def main() -> None:
 
         fields = record["fields"]
         already_correct = (
-            fields.get("Goles Local Real")     == home_score and
-            fields.get("Goles Visitante Real") == away_score
+            fields.get("Goles Reales Local")     == str(home_score) and
+            fields.get("Goles Reales Visitante") == str(away_score)
         )
         if already_correct:
             print("  ✓  Already up to date")
