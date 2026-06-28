@@ -20,8 +20,6 @@ AIRTABLE_TOKEN   = os.environ["AIRTABLE_TOKEN"]
 AIRTABLE_BASE    = "appH8ihJul8pDWOmE"
 COMPETITION      = "WC"
 
-GUATEMALA_TZ = timezone(timedelta(hours=-6))
-
 AT_HEADERS = {
     "Authorization": f"Bearer {AIRTABLE_TOKEN}",
     "Content-Type": "application/json",
