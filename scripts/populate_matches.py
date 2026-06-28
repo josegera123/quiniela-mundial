@@ -12,7 +12,7 @@ import os
 import sys
 import time
 import requests
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from urllib.parse import quote
 
 FOOTBALL_API_KEY = os.environ["FOOTBALL_API_KEY"]
@@ -164,8 +164,10 @@ def record_exists(home_es: str, away_es: str) -> bool:
 
 
 def utc_to_guatemala(utc_str: str) -> str:
-    dt_utc = datetime.fromisoformat(utc_str.replace("Z", "+00:00"))
-    dt_gt  = dt_utc.astimezone(GUATEMALA_TZ)
+    # Strip timezone suffix, parse as naive UTC, subtract 6 hours manually
+    clean = utc_str.replace("Z", "").split("+")[0]
+    dt_utc = datetime.strptime(clean, "%Y-%m-%dT%H:%M:%S")
+    dt_gt  = dt_utc - timedelta(hours=6)
     return dt_gt.strftime("%Y-%m-%dT%H:%M:%S")
 
 
