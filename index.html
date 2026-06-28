@@ -549,6 +549,29 @@
   .toast.error { background: var(--red); }
   .toast.success { background: var(--green); }
 
+  /* ── FACT CARD ── */
+  .fact-card {
+    position: fixed;
+    bottom: 78px;
+    left: 12px;
+    right: 12px;
+    background: rgba(15, 23, 42, 0.93);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 14px;
+    padding: 11px 36px 11px 14px;
+    z-index: 998;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+  }
+  .fact-card.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .fact-label { font-size: 10px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+  .fact-text  { font-size: 12.5px; color: rgba(255,255,255,0.88); line-height: 1.5; }
+  .fact-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: rgba(255,255,255,0.35); font-size: 17px; line-height: 1; cursor: pointer; padding: 2px 4px; }
+
   /* ── UTILITY ── */
   .spinner {
     width: 28px; height: 28px;
@@ -820,6 +843,11 @@
 </nav>
 
 <div class="version-bar" id="version-bar"></div>
+<div class="fact-card" id="fact-card">
+  <button class="fact-close" onclick="dismissFact()">×</button>
+  <div class="fact-label">⚽ Dato curioso</div>
+  <div class="fact-text" id="fact-text"></div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1262,6 +1290,86 @@ async function init() {
       '<div style="grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center;">Ve a ⚙️ Configurar para conectar con Airtable</div>';
   }
 }
+
+const FACTS = [
+  "Uruguay ganó el primer Mundial de la historia en 1930.",
+  "Brasil es la selección con más títulos mundiales, con cinco.",
+  "Brasil es la única selección que ha jugado todos los Mundiales.",
+  "Pelé es el único jugador que ganó tres Copas del Mundo.",
+  "Miroslav Klose es el máximo goleador de los Mundiales con 16 goles.",
+  "Just Fontaine marcó 13 goles en un solo Mundial en 1958.",
+  "Hakan Şükür anotó el gol más rápido de un Mundial a los 11 segundos.",
+  "Roger Milla marcó un gol mundialista con 42 años.",
+  "Italia ganó dos Mundiales consecutivos en 1934 y 1938.",
+  "Los Mundiales de 1942 y 1946 fueron cancelados por la Segunda Guerra Mundial.",
+  "Inglaterra ganó su único Mundial en 1966.",
+  "Geoff Hurst es el único jugador que marcó un triplete en una final.",
+  "La Copa Jules Rimet fue robada en 1966 y encontrada por un perro llamado Pickles.",
+  "La Copa Jules Rimet fue robada nuevamente en 1983 y nunca apareció.",
+  "El Mundial de 1970 fue el primero transmitido en color.",
+  "El balón Telstar de 1970 popularizó el diseño blanco y negro.",
+  "La mascota oficial de un Mundial debutó en 1966.",
+  "Diego Maradona marcó la Mano de Dios en 1986.",
+  "Maradona anotó el Gol del Siglo minutos después ante Inglaterra.",
+  "Argentina ganó el Mundial de 1986 con Diego Maradona como capitán.",
+  "El Mundial de 1994 fue la primera final decidida por penales.",
+  "Roberto Baggio falló el penal decisivo de la final de 1994.",
+  "Francia ganó el Mundial de 1998 siendo anfitriona.",
+  "El Mundial de 2002 fue el primero disputado en Asia.",
+  "Japón y Corea del Sur organizaron juntos el Mundial de 2002.",
+  "Corea del Sur alcanzó las semifinales en 2002.",
+  "Croacia terminó tercera en su primer Mundial en 1998.",
+  "España ganó su primer Mundial en 2010.",
+  "Andrés Iniesta marcó el gol del título español en el minuto 116.",
+  "Alemania derrotó a Brasil 7-1 en la semifinal de 2014.",
+  "Alemania ganó el Mundial de 2014 en territorio americano.",
+  "Mario Götze anotó el gol del título alemán en 2014.",
+  "El VAR debutó en la Copa del Mundo en Rusia 2018.",
+  "Francia ganó su segundo Mundial en 2018.",
+  "Qatar 2022 fue el primer Mundial celebrado en Oriente Medio.",
+  "Qatar 2022 se jugó entre noviembre y diciembre.",
+  "Lionel Messi ganó el Mundial de 2022 con Argentina.",
+  "Argentina derrotó a Francia en penales en la final de 2022.",
+  "Kylian Mbappé marcó tres goles en la final de 2022.",
+  "Lionel Messi es el jugador con más partidos disputados en los Mundiales.",
+  "Oleg Salenko marcó cinco goles en un solo partido en 1994.",
+  "Camerún fue la primera selección africana en llegar a cuartos de final.",
+  "Marruecos fue la primera selección africana en alcanzar unas semifinales.",
+  "Ninguna selección africana ha ganado una Copa del Mundo.",
+  "Ninguna selección asiática ha llegado a una final mundialista.",
+  "Solo ocho países han ganado la Copa del Mundo.",
+  "Países Bajos ha perdido tres finales mundialistas.",
+  "Alemania ha disputado ocho finales de la Copa del Mundo.",
+  "El estadio Maracaná ha albergado dos finales mundialistas.",
+  "El Mundial de 2026 será el primero con 48 selecciones.",
+];
+
+let _factDismissTimer;
+let _factNextTimer;
+let _shownFacts = [];
+
+function dismissFact() {
+  document.getElementById('fact-card').classList.remove('show');
+}
+
+function showRandomFact() {
+  if (_shownFacts.length === FACTS.length) _shownFacts = [];
+  const pool = FACTS.filter((_, i) => !_shownFacts.includes(i));
+  const pick = Math.floor(Math.random() * pool.length);
+  const idx  = FACTS.indexOf(pool[pick]);
+  _shownFacts.push(idx);
+
+  document.getElementById('fact-text').textContent = pool[pick];
+  document.getElementById('fact-card').classList.add('show');
+
+  clearTimeout(_factDismissTimer);
+  _factDismissTimer = setTimeout(dismissFact, 7000);
+
+  clearTimeout(_factNextTimer);
+  _factNextTimer = setTimeout(showRandomFact, 35000 + Math.random() * 25000);
+}
+
+setTimeout(showRandomFact, 18000);
 
 renderVersion();
 init();
