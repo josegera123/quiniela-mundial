@@ -204,6 +204,12 @@ def main() -> None:
         stage    = match.get("stage", "")
         utc_date = match.get("utcDate", "")
 
+        # Skip matches where teams haven't been determined yet
+        if not home_raw or not away_raw:
+            print(f"{STAGE_MAP.get(stage, stage)}: equipos aún por definir — omitido")
+            skipped += 1
+            continue
+
         home_es = translate(home_raw)
         away_es = translate(away_raw)
         fase    = STAGE_MAP.get(stage, stage)
