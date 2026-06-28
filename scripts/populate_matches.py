@@ -125,12 +125,12 @@ TEAM_MAP = {
 
 STAGE_MAP = {
     "GROUP_STAGE":    "Fase de Grupos",
-    "LAST_32":        "Dieciseisavos de Final",
-    "ROUND_OF_32":    "Dieciseisavos de Final",
-    "ROUND_OF_16":    "Octavos de Final",
-    "LAST_16":        "Octavos de Final",
-    "QUARTER_FINALS": "Cuartos de Final",
-    "SEMI_FINALS":    "Semifinal",
+    "LAST_32":        "16vos de final",
+    "ROUND_OF_32":    "16vos de final",
+    "ROUND_OF_16":    "8vos de final",
+    "LAST_16":        "8vos de final",
+    "QUARTER_FINALS": "4tos de final",
+    "SEMI_FINALS":    "Semifinales",
     "THIRD_PLACE":    "Tercer Puesto",
     "FINAL":          "Final",
 }
