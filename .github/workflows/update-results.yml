@@ -21,6 +21,12 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Populate new bracket matches
+        run: python scripts/populate_matches.py
+        env:
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+
       - name: Update results
         run: python scripts/update_results.py
         env:

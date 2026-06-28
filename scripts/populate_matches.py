@@ -125,7 +125,10 @@ TEAM_MAP = {
 
 STAGE_MAP = {
     "GROUP_STAGE":    "Fase de Grupos",
+    "LAST_32":        "Dieciseisavos de Final",
+    "ROUND_OF_32":    "Dieciseisavos de Final",
     "ROUND_OF_16":    "Octavos de Final",
+    "LAST_16":        "Octavos de Final",
     "QUARTER_FINALS": "Cuartos de Final",
     "SEMI_FINALS":    "Semifinal",
     "THIRD_PLACE":    "Tercer Puesto",
@@ -188,8 +191,15 @@ def main() -> None:
         print(f"❌ football-data.org error: {e}")
         sys.exit(1)
 
-    # Only bracket stages (skip group stage — those should already be in Airtable)
-    bracket_stages = {"ROUND_OF_16", "QUARTER_FINALS", "SEMI_FINALS", "THIRD_PLACE", "FINAL"}
+    # All knockout stages (skip group stage — those are already in Airtable)
+    bracket_stages = {
+        "LAST_32", "ROUND_OF_32",
+        "LAST_16", "ROUND_OF_16",
+        "QUARTER_FINALS",
+        "SEMI_FINALS",
+        "THIRD_PLACE",
+        "FINAL",
+    }
     matches = [m for m in matches if m.get("stage") in bracket_stages]
 
     print(f"   Found {len(matches)} bracket match(es)\n")
