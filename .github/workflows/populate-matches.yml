@@ -1,0 +1,23 @@
+name: Populate Bracket Matches
+
+on:
+  workflow_dispatch:   # run manually from the GitHub Actions tab
+
+jobs:
+  populate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Populate bracket matches in Airtable
+        run: python scripts/populate_matches.py
+        env:
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}

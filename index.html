@@ -823,7 +823,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const VERSION = 'v1.0.0';
+const VERSION = 'v1.1.0';
 
 const COUNTRY_CODES = {
   'México': 'mx', 'Sudáfrica': 'za', 'Corea del Sur': 'kr', 'Chequia': 'cz',
@@ -1011,7 +1011,7 @@ function renderMatches() {
   let matches = allMatches;
 
   if (currentFilter === 'open') {
-    matches = matches.filter(m => (new Date(m.fields['Fecha y Hora (Guatemala)']) - now) > 24 * 3600000);
+    matches = matches.filter(m => (new Date(m.fields['Fecha y Hora (Guatemala)']) - now) > 1 * 3600000);
   } else if (currentFilter === 'my') {
     matches = matches.filter(m => myForecasts[m.id]);
   }
@@ -1042,8 +1042,8 @@ function renderMatchCard(m, now) {
   const dt = new Date(f['Fecha y Hora (Guatemala)']);
   const msLeft = dt - now;
   const hoursLeft = msLeft / 3600000;
-  const isClosed = hoursLeft <= 24;
-  const isClosingSoon = hoursLeft > 24 && hoursLeft < 48;
+  const isClosed = hoursLeft <= 1;
+  const isClosingSoon = hoursLeft > 1 && hoursLeft < 3;
   const timeStr = dt.toLocaleTimeString('es-GT', { hour:'2-digit', minute:'2-digit' });
 
   const forecast = myForecasts[m.id];
@@ -1057,7 +1057,7 @@ function renderMatchCard(m, now) {
   let timeLabel, timeClass;
   if (isClosed && msLeft > 0) { timeLabel = '🔒 Cerrado';   timeClass = 'closed-t'; }
   else if (isClosed)           { timeLabel = '⏱ En juego';  timeClass = 'closed-t'; }
-  else if (isClosingSoon)      { timeLabel = `⚠️ Cierra en ${Math.floor(hoursLeft - 24)}h`; timeClass = 'warn'; }
+  else if (isClosingSoon)      { const m = Math.round((hoursLeft - 1) * 60); timeLabel = `⚠️ Cierra en ${m >= 60 ? Math.floor(m/60)+'h' : m+'min'}`; timeClass = 'warn'; }
   else                         { timeLabel = timeStr;         timeClass = ''; }
 
   return `
