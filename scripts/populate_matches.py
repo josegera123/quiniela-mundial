@@ -12,7 +12,7 @@ import os
 import sys
 import time
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime
 from urllib.parse import quote
 
 FOOTBALL_API_KEY = os.environ["FOOTBALL_API_KEY"]
@@ -161,12 +161,10 @@ def record_exists(home_es: str, away_es: str) -> bool:
     return len(resp.json().get("records", [])) > 0
 
 
-def utc_to_guatemala(utc_str: str) -> str:
-    # Strip timezone suffix, parse as naive UTC, subtract 6 hours manually
-    clean = utc_str.replace("Z", "").split("+")[0]
-    dt_utc = datetime.strptime(clean, "%Y-%m-%dT%H:%M:%S")
-    dt_gt  = dt_utc - timedelta(hours=6)
-    return dt_gt.strftime("%Y-%m-%dT%H:%M:%S")
+def parse_datetime(utc_str: str) -> str:
+    # football-data.org returns local kickoff times for WC 2026 (not true UTC)
+    # so we store the value as-is, stripping only the Z suffix
+    return utc_str.replace("Z", "").split("+")[0]
 
 
 def create_record(home_es: str, away_es: str, fecha_gt: str, fase: str, match_id: int) -> None:
@@ -228,7 +226,7 @@ def main() -> None:
         home_es = translate(home_raw)
         away_es = translate(away_raw)
         fase    = STAGE_MAP.get(stage, stage)
-        fecha   = utc_to_guatemala(utc_date) if utc_date else ""
+        fecha   = parse_datetime(utc_date) if utc_date else ""
 
         print(f"{fase}: {home_es} vs {away_es}  ({fecha} GT)")
 
