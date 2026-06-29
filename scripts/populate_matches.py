@@ -169,10 +169,11 @@ def utc_to_guatemala(utc_str: str) -> str:
     return dt_gt.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def create_record(home_es: str, away_es: str, fecha_gt: str, fase: str) -> None:
+def create_record(home_es: str, away_es: str, fecha_gt: str, fase: str, match_id: int) -> None:
     url = f"https://api.airtable.com/v0/{AIRTABLE_BASE}/{quote('Partidos')}"
     payload = {
         "fields": {
+            "ID Partido":               match_id,
             "Equipo Local":             home_es,
             "Equipo Visitante":         away_es,
             "Fecha y Hora (Guatemala)": fecha_gt,
@@ -216,6 +217,7 @@ def main() -> None:
         away_raw = match["awayTeam"]["name"]
         stage    = match.get("stage", "")
         utc_date = match.get("utcDate", "")
+        match_id = match.get("id")
 
         # Skip matches where teams haven't been determined yet
         if not home_raw or not away_raw:
@@ -236,7 +238,7 @@ def main() -> None:
                 print("  ✓  Ya existe en Airtable")
                 skipped += 1
             else:
-                create_record(home_es, away_es, fecha, fase)
+                create_record(home_es, away_es, fecha, fase, match_id)
                 print("  ✅ Creado en Airtable")
                 created += 1
         except requests.HTTPError as e:
