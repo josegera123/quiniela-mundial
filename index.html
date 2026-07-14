@@ -1007,12 +1007,12 @@ async function loadMatches() {
   container.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>Cargando partidos...</div>';
 
   try {
-    const [matchRecords, allForecastRecords] = await Promise.all([
-      airtableFetch('Partidos', '?sort[0][field]=Fecha+y+Hora+(Guatemala)&sort[0][direction]=asc'),
+    const [allMatchRecords, allForecastRecords] = await Promise.all([
+      airtableFetchAll('Partidos', '?sort[0][field]=Fecha+y+Hora+(Guatemala)&sort[0][direction]=asc'),
       currentPlayer ? airtableFetchAll('Pronósticos') : Promise.resolve([])
     ]);
 
-    allMatches = matchRecords.records || [];
+    allMatches = allMatchRecords;
     myForecasts = {};
     for (const f of allForecastRecords) {
       if (f.fields.Participante?.[0] !== currentPlayer?.id) continue;
